@@ -1,0 +1,25 @@
+#TODO:
+#Filtrar a busca do item pelo nome do ponto turistico ou outras opções, não tudo
+#melhorar a resposta
+import json
+import os
+from fuzzywuzzy import fuzz
+
+basepath = os.path.dirname(__file__)
+filepath = os.path.abspath(os.path.join(basepath, ".", "dados", "base_pontos_turisticos.txt"))
+
+def similar(pergunta):
+    ratio = 0
+    resposta = ""
+    with open(filepath, "r") as file:
+        lista = json.loads(file.read())
+        for item in lista["pontos_turisticos"]:
+            thisRatio = fuzz.ratio(pergunta,item)
+            if thisRatio > ratio:
+                ratio = thisRatio
+                resposta = item
+    print(resposta)
+    print(ratio)
+
+
+similar("buraco")
